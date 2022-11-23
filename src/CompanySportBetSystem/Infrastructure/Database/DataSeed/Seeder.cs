@@ -15,6 +15,7 @@
             if (_dBContext.Leagues.Any()) return;
 
             _dBContext.Leagues.AddRangeAsync(LeagueData.Get());
+            _dBContext.SaveChanges();
             var leagueId = _dBContext.Leagues.FirstOrDefault()!.Id;
             _dBContext.Games.AddRangeAsync(GameData.Get(leagueId));
             _dBContext.BettingUser.AddRange(BettingUserData.Get());

@@ -2,7 +2,7 @@ using MediatR;
 
 namespace CompanySportBetSystem.Application.Domain;
 
-public class Game
+public class Game : Entity
 {
     public int Id { get; }
     public string HomeTeamName { get; init; } = string.Empty;
@@ -19,14 +19,20 @@ public class Game
         if (Bets.Any(x => x.UserUd == bet.UserUd)) throw new InvalidOperationException("User already bet....");
 
         Bets.Add(bet);
+        this.DomainEvents.Add(new GameFinishedEvent(this.Id, this.HomeTeamScore, this.AwayTeamScore));
     }
-    
+
     public void AddFinalGameScore(int home, int away)
     {
         if (home < 0 || away < 0) throw new InvalidDataException("score can not be negative....");
         HomeTeamScore = home;
         AwayTeamScore = away;
     }
+}
+
+public class Entity
+{
+    public List<INotification> DomainEvents { get; set; } = new();
 }
 
 public record GameFinishedEvent(int GameId, int HomeScore, int AwayScore) : INotification;

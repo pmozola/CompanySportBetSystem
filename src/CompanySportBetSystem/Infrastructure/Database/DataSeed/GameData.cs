@@ -27,13 +27,13 @@ namespace CompanySportBetSystem.Infrastructure.Database.DataSeed
                     League = leagueId,
                     HomeTeamName = "Spain",
                     AwayTeamName = "Costa Rica",
-                    Date = new DateTime(2022,11,23,11,0,0)
+                    Date = new DateTime(2022,11,23,17,0,0)
                 },new Game
                 {
                     League = leagueId,
                     HomeTeamName = "Belgium",
                     AwayTeamName = "Canada",
-                    Date = new DateTime(2022,11,23,11,0,0)
+                    Date = new DateTime(2022,11,23,20,0,0)
                 }
             };
         }

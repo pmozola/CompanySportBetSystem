@@ -1,6 +1,8 @@
-﻿using CompanySportBetSystem.Application.Handlers.Commands;
+﻿using CompanySportBetSystem.Application.Domain;
+using CompanySportBetSystem.Application.Handlers.Commands;
 using CompanySportBetSystem.Infrastructure.Database;
 using CompanySportBetSystem.Infrastructure.Database.DataSeed;
+using CompanySportBetSystem.Infrastructure.Database.Repositories;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +23,8 @@ namespace CompanySportBetSystem
                 options => options.UseInMemoryDatabase("BetSystem"));
 
             services
-                .AddTransient<Seeder>();
+                .AddTransient<Seeder>()
+                .AddTransient<IGameRepository, GameRepository>();
 
             return services;
         }

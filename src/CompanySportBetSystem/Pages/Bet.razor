@@ -1,0 +1,44 @@
+﻿@page "/bet"
+@using MediatR
+@using CompanySportBetSystem.Infrastructure.Queries
+@inject ISender _mediatr;
+
+<PageTitle>Weather forecast</PageTitle>
+
+<h3>Bet</h3>
+
+@if (!Games.Any())
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Home Team</th>
+            <th>Away Team</th>
+            <th>Game Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var game in Games)
+        {
+            <tr>
+                <td>@game.HomeTeamName</td>
+                <td>@game.AwayTeamName</td>
+                <td>aaaaaaaa</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<GameViewModel> Games { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Games = await _mediatr.Send(new GetGamesToBetQuery());
+    }
+}

@@ -3,7 +3,7 @@ using CompanySportBetSystem.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CompanySportBetSystem.Application.Handlers.Quries
+namespace CompanySportBetSystem.Infrastructure.Queries
 {
     public class GetTableQueryHandler : IRequestHandler<GetTableQuery, List<TablePosition>>
     {
@@ -14,7 +14,7 @@ namespace CompanySportBetSystem.Application.Handlers.Quries
             _dbContext = dbContext;
         }
 
-        public  Task<List<TablePosition>> Handle(GetTableQuery request, CancellationToken cancellationToken)
+        public Task<List<TablePosition>> Handle(GetTableQuery request, CancellationToken cancellationToken)
         {
             return
                 _dbContext
@@ -23,6 +23,6 @@ namespace CompanySportBetSystem.Application.Handlers.Quries
                     .ToListAsync(cancellationToken);
         }
     }
-    
+
     public record GetTableQuery(int LeagueId) : IRequest<List<TablePosition>>;
 }
