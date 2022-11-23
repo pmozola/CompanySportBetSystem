@@ -1,4 +1,5 @@
 ﻿using CompanySportBetSystem.Application.Domain;
+using CompanySportBetSystem.Application.Projections;
 using CompanySportBetSystem.Infrastructure.Database.Config;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,5 +17,9 @@ public class BetDbContext : DbContext
     }
 
     public DbSet<League> Leagues { get; set; }
+    public DbSet<Game> Games { get; set; }
+    public DbSet<ScoreBet> Bets { get; set; }
+    public DbSet<BettingUser> BettingUser { get; set; }
+    public DbSet<TablePosition> TablePositions { get; set; }
 }
 

@@ -2,13 +2,13 @@ using MediatR;
 
 namespace CompanySportBetSystem.Application.Domain;
 
-public class Game : IAggregateRoot
+public class Game
 {
     public int Id { get; }
     public string HomeTeamName { get; init; } = string.Empty;
     public string AwayTeamName { get; init; } = string.Empty;
     public DateTime Date { get; init; }
-    public Guid League { get; init; }
+    public int League { get; init; }
     public List<ScoreBet> Bets { get; } = new();
     public int HomeTeamScore { get; private set; }
     public int AwayTeamScore { get; private set; }
@@ -16,8 +16,11 @@ public class Game : IAggregateRoot
     public void AddBet(ScoreBet bet)
     {
         if (Date <= DateTime.Now) throw new InvalidOperationException("Too late....");
-    }
+        if (Bets.Any(x => x.UserUd == bet.UserUd)) throw new InvalidOperationException("User already bet....");
 
+        Bets.Add(bet);
+    }
+    
     public void AddFinalGameScore(int home, int away)
     {
         if (home < 0 || away < 0) throw new InvalidDataException("score can not be negative....");
@@ -26,7 +29,7 @@ public class Game : IAggregateRoot
     }
 }
 
-public record GameFinishedEvent(Guid GameId, int HomeScore, int AwayScore) : INotification;
+public record GameFinishedEvent(int GameId, int HomeScore, int AwayScore) : INotification;
 
 public class League : IAggregateRoot
 {
@@ -44,22 +47,23 @@ public class ScoreBet
 {
     private ScoreBet() { }
 
-    public ScoreBet Create(int homeScore, int awayScore)
+    public static ScoreBet Create(int homeScore, int awayScore, Guid userId)
     {
         if (homeScore < 0 || awayScore < 0) throw new InvalidDataException("Score cannot be with negative...");
 
-        return new ScoreBet { Home = homeScore, Away = awayScore };
+        return new ScoreBet { Home = homeScore, Away = awayScore, UserUd = userId };
     }
 
-    int Id { get; }
-    int Home { get; init; }
-    int Away { get; init; }
+    public int Id { get; }
+    public int Home { get; init; }
+    public int Away { get; init; }
+    public Guid UserUd { get; init; }
 }
 
 public class BettingUser
 {
-    int Id { get; init; }
-    string Nick { get; init; } = string.Empty;
+    public Guid Id { get; init; }
+    public string Nick { get; init; } = string.Empty;
 
     private BettingUser() { }
 

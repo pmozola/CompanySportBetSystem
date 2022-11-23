@@ -8,7 +8,7 @@ namespace CompanySportBetSystem.Infrastructure.Database.DataSeed
         {
             return new List<League>()
             {
-                new League{Name="Fifa World Cup" }
+                new() {Name="Fifa World Cup" }
             };
         }
     }

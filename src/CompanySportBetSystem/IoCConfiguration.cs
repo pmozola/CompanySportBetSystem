@@ -12,7 +12,7 @@ namespace CompanySportBetSystem
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services
-                .AddMediatR(typeof(AddScoreCommandHandler).Assembly)
+                .AddMediatR(typeof(AddBetCommandHandler).Assembly)
                 // .AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
                 // .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>))
                 .AddValidatorsFromAssemblyContaining<AddScoreCommandValidator>();

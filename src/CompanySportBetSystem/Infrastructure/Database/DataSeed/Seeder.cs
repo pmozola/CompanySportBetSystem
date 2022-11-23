@@ -3,18 +3,23 @@
 
     public class Seeder
     {
-        private readonly BetDbContext dBContext;
+        private readonly BetDbContext _dBContext;
 
         public Seeder(BetDbContext dBContext)
         {
-            this.dBContext = dBContext;
+            this._dBContext = dBContext;
         }
 
         public void Seed()
         {
-            dBContext.Leagues.AddRangeAsync(LeagueData.Get());
+            if (_dBContext.Leagues.Any()) return;
 
-            dBContext.SaveChanges();
+            _dBContext.Leagues.AddRangeAsync(LeagueData.Get());
+            var leagueId = _dBContext.Leagues.FirstOrDefault()!.Id;
+            _dBContext.Games.AddRangeAsync(GameData.Get(leagueId));
+            _dBContext.BettingUser.AddRange(BettingUserData.Get());
+
+            _dBContext.SaveChanges();
         }
     }
 
@@ -22,10 +27,8 @@
     {
         public static IServiceProvider SeedData(this IServiceProvider services)
         {
-            using (var scope = services.CreateScope())
-            {
-                scope.ServiceProvider.GetRequiredService<Seeder>().Seed();
-            }
+            using var scope = services.CreateScope();
+            scope.ServiceProvider.GetRequiredService<Seeder>().Seed();
 
             return services;
         }
